@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gradle + Spring MVC</title>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap/bootstrap.min.css" th:href="@{../static/css/bootstrap/bootstrap.min.css}" />
+    <script type="text/javascript" src="../../js/test.js" th:src="@{/js/test.js}"  />
+</head>
+<body>
+
+<div> INDEX </div>
+
+<table class="table">
+    <tr th:each="songs: ${musics}">
+        <td th:text="${songs.getAuthor()}" />
+        <td th:text="${songs.getName()}" />
+    </tr>
+</table>
+
+</body>
+</html>

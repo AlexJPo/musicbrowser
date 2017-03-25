@@ -1,0 +1,8 @@
+p { font-style: italic; color: rgb(120,120,120); }
+body { background: whitesmoke; }
+.password-weak,
+.password-normal,
+.password-strong { font-size: 14px; font-style: italic; font-weight: bold; }
+.password-weak { color: #bf0106; }
+.password-normal {color: #d6b756; }
+.password-strong { color: #008000; }

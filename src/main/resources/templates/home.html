@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap/bootstrap.min.css" th:href="@{../../css/bootstrap/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <div class="content">
+        <form name="form" th:action="@{/home}" th:object="${userModel}" action="/home" method="POST">
+            <fieldset>
+                <input class="form-control" type="text" name="username" th:field="*{userName}" value="" placeholder="Username" />
+                <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></span>
+
+                <input class="form-control" id="userPassword" type="password" name="password" th:field="*{password}" placeholder="Password" />
+                <span id="password-strength"></span>
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+            </fieldset>
+            <input type="submit" id="login" value="Login" class="btn btn-primary" />
+        </form>
+    </div>
+
+    <div th:if="${userModel.userName != ''}">
+        <p th:text="${userModel.userName}"></p>
+        <p th:text="${userModel.password}"></p>
+    </div>
+    <!--<p th:text="'Hello, ' + ${username} + '!'"></p>-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/bootstrap/bootstrap.min.js" th:src="@{../../js/bootstrap/bootstrap.min.js}"  />
+
+</body>
+</html>
