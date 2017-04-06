@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gradle + Spring MVC</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap.min.css}" />
+</head>
+<body>
+
+<div class="container-fluid">
+    <form id="updateAuthor" th:action="@{/update}" th:object="${song}" method="post">
+        <div class="row">
+            <div class="col-xs-6">
+                <label>Author</label>
+                <input class="form-control" type="text" th:value="${song.getAuthor()}"/>
+                <select th:name="author_song">
+                    <option th:each="authors, iterStat : ${authors}"
+                            th:value="${iterStat.index + 1}"
+                            th:text="${authors.getAuthorName()}"
+                            th:selected="${authors.getAuthorName() == song.getAuthor()}"
+                    ></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6">
+                <label>Song Name</label>
+                <input class="form-control" type="text" th:value="${song.getName()}"/>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-xs-3">
+                <a href="/music" class="btn btn-default btn-block">Back</a>
+            </div>
+            <div class="col-xs-3">
+                <input type="submit" class="btn btn-default btn-block" value="Update"/>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

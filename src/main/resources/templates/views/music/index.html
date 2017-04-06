@@ -1,0 +1,49 @@
+
+
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gradle + Spring MVC</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap.min.css}" />
+</head>
+<body>
+
+<div class="container-fluid">
+    <h2> Musics </h2>
+
+    <br/>
+    <div class="row">
+        <div class="col-xs-2">
+            <a th:href="@{__${#httpServletRequest.requestURI}__/add}">New</a>
+        </div>
+    </div>
+    <br/>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Author</th>
+            <th>Song name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="songs, iterStat : ${musics}">
+            <td th:text="${iterStat.index + 1}"></td>
+            <td th:text="${songs.getAuthor()}" />
+            <td th:text="${songs.getName()}" />
+            <td>
+                <a th:href="@{__${#httpServletRequest.requestURI}__/edit(id = ${songs.getId()})}">Edit</a>
+                <a th:href="@{__${#httpServletRequest.requestURI}__/remove(id = ${songs.getId()})}">Remove</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"  />
+
+</body>
+</html>

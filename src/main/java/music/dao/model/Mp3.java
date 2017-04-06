@@ -5,10 +5,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class Mp3 {
 
+    private int idRecord;
     private String songName;
     private String authorName;
 
     public Mp3() {}
+
+    public int getId() {
+        return idRecord;
+    }
+    public void setId(int id) {
+        this.idRecord = id;
+    }
 
     public String getName() {
         return songName;

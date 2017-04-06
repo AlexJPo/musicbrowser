@@ -1,3 +1,13 @@
+/* Overwrite */
+.table tr {
+    transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+}
+.table tr:hover {
+    background-color: rgb(230, 230, 230);
+}
+
 p { font-style: italic; color: rgb(120,120,120); }
 body { background: whitesmoke; }
 .password-weak,

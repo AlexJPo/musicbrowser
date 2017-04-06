@@ -7,25 +7,15 @@
 </head>
 <body>
 
-<h2> Musics </h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Author</th>
-            <th>Song name</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="songs: ${musics}">
-            <td th:text="${songs.getAuthor()}" />
-            <td th:text="${songs.getName()}" />
-        </tr>
-    </tbody>
-</table>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"  />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-2">
+            <a th:href="@{'~/music'}">Music</a>
+            |
+            <a th:href="@{'~/author'}">Authors</a>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
