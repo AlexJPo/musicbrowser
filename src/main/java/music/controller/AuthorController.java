@@ -27,13 +27,7 @@ public class AuthorController {
         return new ModelAndView("views/author/add", "authors", null);
     }
 
-    @RequestMapping(value="/edit")
-    public ModelAndView edit(@RequestParam("id") int id) {
-        Author author = sqlServerDao.getAuthorById(id);
-        return new ModelAndView("views/author/edit", "author", author);
-    }
-
-    @PostMapping(value="/create")
+    @PostMapping(value="/add")
     public ModelAndView add(@RequestParam("author_name") String name) {
         Author existAuthor = sqlServerDao.getAuthorByName(name);
 
@@ -43,6 +37,12 @@ public class AuthorController {
         } else {
             return errorAuthor(name);
         }
+    }
+
+    @RequestMapping(value="/edit")
+    public ModelAndView edit(@RequestParam("id") int id) {
+        Author author = sqlServerDao.getAuthorById(id);
+        return new ModelAndView("views/author/edit", "author", author);
     }
 
     @PostMapping(value="/update")

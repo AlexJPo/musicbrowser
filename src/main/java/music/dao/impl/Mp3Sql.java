@@ -29,6 +29,18 @@ public class Mp3Sql implements Mp3Inerface, AuthorInterface {
             Mp3 mp3 = new Mp3();
             mp3.setId(rs.getInt("IdRecord"));
             mp3.setName(rs.getString("SongName"));
+            mp3.setAuthor(rs.getString("AuthorId"));
+
+            return mp3;
+        }
+    }
+    private static final class MusicRowMapper implements RowMapper<Mp3> {
+
+        @Override
+        public Mp3 mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Mp3 mp3 = new Mp3();
+            mp3.setId(rs.getInt("IdRecord"));
+            mp3.setName(rs.getString("SongName"));
             mp3.setAuthor(rs.getString("AuthorName"));
 
             return mp3;
@@ -52,29 +64,55 @@ public class Mp3Sql implements Mp3Inerface, AuthorInterface {
     }
 
     @Override
-    public void insert(Mp3 mp3) {
-        String sql = "INSERT INTO Music (Name, Author) VALUES (:name, :author)";
+    public void insertMp3(String songName, int authorId) {
+        String sql = "INSERT INTO Music (SongName, AuthorId) VALUES (:name, :id)";
 
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue("name", mp3.getName());
-        namedParameters.addValue("author", mp3.getAuthor());
+        namedParameters.addValue("name", songName);
+        namedParameters.addValue("id", authorId);
 
         jdbcTemplate.update(sql, namedParameters);
     }
 
     @Override
-    public void delete(Mp3 mp3) {
+    public void updateMp3(String songName, int authorId, int songId) {
+        String sql = "UPDATE Music SET SongName = :songName, AuthorId = :authorId WHERE IdRecord = :id";
 
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("songName", songName);
+        namedParameters.addValue("authorId", authorId);
+        namedParameters.addValue("id", songId);
+
+        jdbcTemplate.update(sql, namedParameters);
     }
 
     @Override
-    public Mp3 getById(int id) {
+    public void deleteMp3(int songId) {
+        String sql = "DELETE FROM Music WHERE IdRecord = :id";
+        SqlParameterSource param = new MapSqlParameterSource("id", songId);
+        jdbcTemplate.update(sql, param);
+    }
+
+    @Override
+    public Mp3 getMp3ById(int id) {
         String sql = "SELECT Music.IdRecord, Music.SongName, Author.AuthorName FROM Music " +
                 "INNER JOIN Author ON Music.AuthorId = Author.IdRecord " +
                 "WHERE Music.IdRecord = :id";
 
         SqlParameterSource param = new MapSqlParameterSource("id", id);
-        return jdbcTemplate.queryForObject(sql, param, new MP3RowMapper());
+        return jdbcTemplate.queryForObject(sql, param, new MusicRowMapper());
+    }
+
+    @Override
+    public Mp3 getMp3ByName(String name) {
+        String sql = "SELECT * FROM Music WHERE LOWER(SongName) = :name";
+
+        try {
+            SqlParameterSource param = new MapSqlParameterSource("name", name.toLowerCase().trim());
+            return jdbcTemplate.queryForObject(sql, param, new MP3RowMapper());
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+        }
     }
 
     @Override
@@ -87,11 +125,10 @@ public class Mp3Sql implements Mp3Inerface, AuthorInterface {
 
     @Override
     public List<Mp3> getAllMp3List() {
-        String sql = "SELECT Music.IdRecord, Music.SongName, Author.AuthorName " +
-                "FROM Music " +
+        String sql = "SELECT Music.IdRecord, Music.SongName, Author.AuthorName FROM Music " +
                 "INNER JOIN Author ON Music.AuthorId = Author.IdRecord";
 
-        return jdbcTemplate.query(sql, new MP3RowMapper());
+        return jdbcTemplate.query(sql, new MusicRowMapper());
     }
 
     @Override

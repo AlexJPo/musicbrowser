@@ -37,6 +37,6 @@ public class AppStart {
         SpringApplication.run(AppStart.class, args);
 
 
-        //System.out.println(sqlServerDao.getById(2));
+        //System.out.println(sqlServerDao.getMp3ById(2));
     }
 }

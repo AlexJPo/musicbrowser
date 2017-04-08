@@ -5,7 +5,6 @@ import music.dao.model.Author;
 import music.dao.model.Mp3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,23 +24,83 @@ public class MusicController {
         return new ModelAndView("views/music/index", "musics", allSongs);
     }
 
-    @RequestMapping(value="/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView edit(@PathVariable("id") int id, ModelAndView  model) {
-        Mp3 song = sqlServerDao.getById(id);
+    @RequestMapping(value="/add")
+    public ModelAndView add(ModelAndView model) {
         List<Author> authors = sqlServerDao.getAllAuthor();
 
-        model.setViewName("views/edit");
-        model.addObject("song", song);
+        model.addObject("musics", null);
         model.addObject("authors", authors);
-        //return new ModelAndView("views/edit");
+        model.setViewName("views/music/add");
+
         return model;
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String update(@RequestParam("author_song") String author_song,
-                         @ModelAttribute Mp3 song,
-                         BindingResult bindingResult) {
+    @PostMapping(value="/add")
+    public ModelAndView add(@RequestParam("song_name") String songName, @RequestParam("author_song") int authorId) {
+        Mp3 existSong = sqlServerDao.getMp3ByName(songName);
 
-        return null;
+        if (existSong == null) {
+            sqlServerDao.insertMp3(songName, authorId);
+            return new ModelAndView("redirect:/music");
+        } else {
+            ModelAndView model = new ModelAndView();
+            List<Author> authors = sqlServerDao.getAllAuthor();
+
+            model.setViewName("views/music/add");
+            model.addObject("musics", songName);
+            model.addObject("authors", authors);
+            model.addObject("error", "Song name is already exist!");
+
+            return model;
+        }
+    }
+
+    @GetMapping(value="/edit")
+    public ModelAndView edit(@RequestParam("id") int id) {
+        return editMusic(id);
+    }
+
+    @PostMapping(value="/edit")
+    public ModelAndView edit(@RequestParam("song_name") String songName,
+                             @RequestParam("author_song") int authorId,
+                             @RequestParam("song_id") int songId) {
+        Mp3 existSong = sqlServerDao.getMp3ByName(songName);
+
+        if (existSong == null) {
+            sqlServerDao.updateMp3(songName, authorId, songId);
+            return new ModelAndView("redirect:/music");
+        } else {
+            return errorMusic(songId, songName);
+        }
+    }
+
+    @GetMapping(value="/remove")
+    public ModelAndView remove(@RequestParam("id") int id) {
+        sqlServerDao.deleteMp3(id);
+        return new ModelAndView("redirect:/music");
+    }
+
+    private ModelAndView editMusic(int id) {
+        Mp3 song = sqlServerDao.getMp3ById(id);
+        List<Author> authors = sqlServerDao.getAllAuthor();
+
+        ModelAndView model = new ModelAndView();
+        model.addObject("song", song);
+        model.addObject("authors", authors);
+        model.setViewName("views/music/edit");
+
+        return model;
+    }
+    private ModelAndView errorMusic(int songId, String songName) {
+        Mp3 song = sqlServerDao.getMp3ById(songId);
+        List<Author> authors = sqlServerDao.getAllAuthor();
+        ModelAndView model = new ModelAndView();
+
+        model.addObject("song", song);
+        model.addObject("authors", authors);
+        model.addObject("error", "Song name '" + songName + "' is already exist!");
+        model.setViewName("views/music/edit");
+
+        return model;
     }
 }
