@@ -1,6 +1,8 @@
 package music.dao.model;
 
 import org.springframework.stereotype.Service;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Service
 public class Mp3 {

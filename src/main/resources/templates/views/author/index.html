@@ -28,9 +28,9 @@
             <td th:text="${iterStat.index + 1}"></td>
             <td th:text="${author.getAuthorName()}" />
             <td>
-                <a th:href="@{__${#httpServletRequest.requestURI}__/edit(id=${author.getIdRecorde()})}">Edit</a>
+                <a th:href="@{__${#httpServletRequest.requestURI}__/edit(id=${author.getIdRecord()})}">Edit</a>
                 <span> | </span>
-                <a th:href="@{__${#httpServletRequest.requestURI}__/remove(id=${author.getIdRecorde()})}">Remove</a>
+                <a th:href="@{__${#httpServletRequest.requestURI}__/remove(id=${author.getIdRecord()})}">Remove</a>
             </td>
         </tr>
         </tbody>

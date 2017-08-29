@@ -51,7 +51,7 @@ public class Mp3Sql implements Mp3Inerface, AuthorInterface {
         @Override
         public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
             Author author = new Author();
-            author.setIdRecorde(rs.getInt("IdRecord"));
+            author.setIdRecord(rs.getInt("IdRecord"));
             author.setAuthorName(rs.getString("AuthorName"));
 
             return author;

@@ -1,19 +1,17 @@
 package music.dao.interfaces;
 
-import music.dao.model.Author;
-
 import java.util.List;
 
-public interface AuthorInterface {
+public interface AuthorEntityInterface {
     void insertAuthor(String authorName);
 
     void updateAuthor(int id, String authorName);
 
     void deleteAuthor(int id);
 
-    List getAllAuthor();
+    <T> List<T> getAllAuthor();
 
-    Author getAuthorByName(String name);
+    <T> T getAuthorByName(String name);
 
-    Author getAuthorById(int id);
+    <T> T getAuthorById(int id);
 }
