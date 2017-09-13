@@ -17,6 +17,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -80,8 +81,8 @@ public class AppStart {
         //Mp3Sql sqlServerDao = (Mp3Sql) context.getBean("sqlServerDao");
         DataSource ds = getDataSource();
 
-        Mp3Sql sqlServerDao = new Mp3Sql();
-        sqlServerDao.setDataSource(ds);
+       /* Mp3Sql sqlServerDao = new Mp3Sql();
+        sqlServerDao.setDataSource(ds);*/
 
         SpringApplication.run(AppStart.class, args);
 

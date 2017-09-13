@@ -9,6 +9,7 @@ public class AuthorEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IdRecord")
     private int idRecord;
+
     @Column(name = "AuthorName")
     private String authorName;
 

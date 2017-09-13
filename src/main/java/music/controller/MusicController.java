@@ -2,7 +2,11 @@ package music.controller;
 
 import music.dao.impl.Mp3Sql;
 import music.dao.model.Author;
+import music.dao.model.AuthorEntity;
 import music.dao.model.Mp3;
+import music.dao.model.MusicEntity;
+import music.repositories.AuthorRepositories;
+import music.repositories.MusicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -18,15 +22,25 @@ public class MusicController {
     @Autowired
     public Mp3Sql sqlServerDao;
 
+    @Autowired
+    MusicRepository musicRepository;
+    @Autowired
+    AuthorRepositories authorRepository;
+
     @RequestMapping(value="", method = RequestMethod.GET)
     public ModelAndView home() {
-        List<Mp3> allSongs = sqlServerDao.getAllMp3List();
+        /*List<Mp3> allSongs = sqlServerDao.getAllMp3List();
+        return new ModelAndView("views/music/index", "musics", allSongs);*/
+
+        List<MusicEntity> allSongs = musicRepository.getAllMusicList();
         return new ModelAndView("views/music/index", "musics", allSongs);
     }
 
     @RequestMapping(value="/add")
     public ModelAndView add(ModelAndView model) {
-        List<Author> authors = sqlServerDao.getAllAuthor();
+        //List<Author> authors = sqlServerDao.getAllAuthor();
+
+        List<AuthorEntity> authors = authorRepository.getAllAuthor();
 
         model.addObject("musics", null);
         model.addObject("authors", authors);
@@ -37,7 +51,26 @@ public class MusicController {
 
     @PostMapping(value="/add")
     public ModelAndView add(@RequestParam("song_name") String songName, @RequestParam("author_song") int authorId) {
-        Mp3 existSong = sqlServerDao.getMp3ByName(songName);
+        MusicEntity existSong = musicRepository.getMusicByName(songName);
+
+        if (existSong == null) {
+            AuthorEntity author = authorRepository.getAuthorById(authorId);
+
+            musicRepository.insertMusic(songName, author);
+            return new ModelAndView("redirect:/music");
+        } else {
+            ModelAndView model = new ModelAndView();
+            List<AuthorEntity> authors = authorRepository.getAllAuthor();
+
+            model.setViewName("views/music/add");
+            model.addObject("musics", songName);
+            model.addObject("authors", authors);
+            model.addObject("error", "Song name is already exist!");
+
+            return model;
+        }
+
+        /*Mp3 existSong = sqlServerDao.getMp3ByName(songName);
 
         if (existSong == null) {
             sqlServerDao.insertMp3(songName, authorId);
@@ -52,7 +85,7 @@ public class MusicController {
             model.addObject("error", "Song name is already exist!");
 
             return model;
-        }
+        }*/
     }
 
     @GetMapping(value="/edit")
@@ -64,10 +97,22 @@ public class MusicController {
     public ModelAndView edit(@RequestParam("song_name") String songName,
                              @RequestParam("author_song") int authorId,
                              @RequestParam("song_id") int songId) {
-        Mp3 existSong = sqlServerDao.getMp3ByName(songName);
+
+        /*Mp3 existSong = sqlServerDao.getMp3ByName(songName);
 
         if (existSong == null) {
             sqlServerDao.updateMp3(songName, authorId, songId);
+            return new ModelAndView("redirect:/music");
+        } else {
+            return errorMusic(songId, songName);
+        }*/
+
+        MusicEntity existSong = musicRepository.getMusicByName(songName);
+
+        if (existSong == null) {
+            AuthorEntity author = authorRepository.getAuthorById(authorId);
+
+            musicRepository.updateMusic(songName, author, songId);
             return new ModelAndView("redirect:/music");
         } else {
             return errorMusic(songId, songName);
@@ -76,7 +121,8 @@ public class MusicController {
 
     @GetMapping(value="/remove")
     public ModelAndView remove(@RequestParam("id") int id) {
-        sqlServerDao.deleteMp3(id);
+        //sqlServerDao.deleteMp3(id);
+        musicRepository.deleteMusic(id);
         return new ModelAndView("redirect:/music");
     }
 
