@@ -30,6 +30,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile('org.springframework:spring-context:4.3.6.RELEASE')
     compile("org.springframework:spring-jdbc:latest.release")
+    compile group: 'org.springframework', name: 'spring-orm', version: '4.3.9.RELEASE'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.10.Final'
+
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }

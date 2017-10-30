@@ -26,7 +26,7 @@
                 <label>Author</label>
                 <select class="form-control" th:name="author_song">
                     <option th:each="authors, iterStat : ${authors}"
-                            th:value="${iterStat.index + 1}"
+                            th:value="${authors.getIdRecord()}"
                             th:text="${authors.getAuthorName()}"
                             th:selected="${authors.getAuthorName() == song.getAuthor()}"
                     ></option>

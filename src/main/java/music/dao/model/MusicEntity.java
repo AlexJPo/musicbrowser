@@ -1,21 +1,28 @@
 package music.dao.model;
 
-import org.springframework.stereotype.Service;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Service
-public class Mp3 {
-
+@Entity
+@Table(name="Music")
+public class MusicEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IdRecord")
     private int idRecord;
-    private String songName;
-    private String authorName;
 
-    public Mp3() {}
+    @Column(name = "SongName")
+    private String songName;
+
+    @ManyToOne
+    @JoinColumn(name = "AuthorId")
+    private AuthorEntity authorName;
+
+    public MusicEntity() {}
 
     public int getId() {
         return idRecord;
     }
+
     public void setId(int id) {
         this.idRecord = id;
     }
@@ -28,16 +35,12 @@ public class Mp3 {
         this.songName = name;
     }
 
-    public String getAuthor() {
+    public AuthorEntity getAuthor() {
         return authorName;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(AuthorEntity author) {
         this.authorName = author;
     }
 
-    /*@Override
-    public*String toString() {
-        return "[MP3 = Author: " + authorName + ", Song name: " + songName + " ]";
-    }*/
 }

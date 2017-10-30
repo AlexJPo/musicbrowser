@@ -1,8 +1,19 @@
 package music.dao.model;
 
-public class Author {
+import javax.persistence.*;
+
+@Entity
+@Table(name="Author")
+public class AuthorEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IdRecord")
     private int idRecord;
+
+    @Column(name = "AuthorName")
     private String authorName;
+
+    public AuthorEntity() {}
 
     public int getIdRecord() {
         return idRecord;
