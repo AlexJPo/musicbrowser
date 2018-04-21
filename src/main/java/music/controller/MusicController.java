@@ -90,7 +90,6 @@ public class MusicController {
 
     @GetMapping(value="/remove")
     public ModelAndView remove(@RequestParam("id") int id) {
-        //sqlServerDao.deleteMp3(id);
         musicRepository.deleteMusic(id);
         return new ModelAndView("redirect:/music");
     }
