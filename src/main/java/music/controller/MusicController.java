@@ -29,17 +29,12 @@ public class MusicController {
 
     @RequestMapping(value="", method = RequestMethod.GET)
     public ModelAndView home() {
-        /*List<Mp3> allSongs = sqlServerDao.getAllMp3List();
-        return new ModelAndView("views/music/index", "musics", allSongs);*/
-
         List<MusicEntity> allSongs = musicRepository.getAllMusicList();
         return new ModelAndView("views/music/index", "musics", allSongs);
     }
 
     @RequestMapping(value="/add")
     public ModelAndView add(ModelAndView model) {
-        //List<Author> authors = sqlServerDao.getAllAuthor();
-
         List<AuthorEntity> authors = authorRepository.getAllAuthor();
 
         model.addObject("musics", null);
@@ -69,23 +64,6 @@ public class MusicController {
 
             return model;
         }
-
-        /*Mp3 existSong = sqlServerDao.getMp3ByName(songName);
-
-        if (existSong == null) {
-            sqlServerDao.insertMp3(songName, authorId);
-            return new ModelAndView("redirect:/music");
-        } else {
-            ModelAndView model = new ModelAndView();
-            List<Author> authors = sqlServerDao.getAllAuthor();
-
-            model.setViewName("views/music/add");
-            model.addObject("musics", songName);
-            model.addObject("authors", authors);
-            model.addObject("error", "Song name is already exist!");
-
-            return model;
-        }*/
     }
 
     @GetMapping(value="/edit")
@@ -97,15 +75,6 @@ public class MusicController {
     public ModelAndView edit(@RequestParam("song_name") String songName,
                              @RequestParam("author_song") int authorId,
                              @RequestParam("song_id") int songId) {
-
-        /*Mp3 existSong = sqlServerDao.getMp3ByName(songName);
-
-        if (existSong == null) {
-            sqlServerDao.updateMp3(songName, authorId, songId);
-            return new ModelAndView("redirect:/music");
-        } else {
-            return errorMusic(songId, songName);
-        }*/
 
         MusicEntity existSong = musicRepository.getMusicByName(songName);
 
